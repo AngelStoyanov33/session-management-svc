@@ -3,6 +3,7 @@ package me.angelstoyanov.sporton.management.session.model.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import me.angelstoyanov.sporton.management.session.model.Pitch;
 import me.angelstoyanov.sporton.management.session.model.PitchType;
 import me.angelstoyanov.sporton.management.session.model.Polygon;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -50,6 +51,14 @@ public class PitchDTO {
         this.location = location;
         this.tags = tags;
         this.rolesRequired = rolesRequired;
+    }
+    public PitchDTO(Pitch pitch) {
+        this.id = pitch.getId();
+        this.name = pitch.getName();
+        this.type = pitch.getType();
+        this.location = pitch.getLocation();
+        this.tags = pitch.getTags();
+        this.rolesRequired = pitch.getRolesRequired();
     }
 
     public PitchDTO() {

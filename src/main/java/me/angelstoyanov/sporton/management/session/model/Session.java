@@ -53,21 +53,27 @@ public class Session {
     @BsonProperty("pitch_id")
     private ObjectId pitchId;
 
+    @JsonProperty("organizer_id")
+    @BsonProperty("organizer_id")
+    private ObjectId organizerId;
+
     @JsonProperty("users")
     private List<SessionUser> users;
 
-    public Session(ObjectId id, SessionStatus status, PitchType type, ObjectId pitchId, List<SessionUser> users) {
+    public Session(ObjectId id, SessionStatus status, PitchType type, ObjectId pitchId, ObjectId organizerId, List<SessionUser> users) {
         this.id = id;
         this.status = status;
         this.type = type;
         this.pitchId = pitchId;
+        this.organizerId = organizerId;
         this.users = users;
     }
 
-    public Session(SessionStatus status, PitchType type, ObjectId pitchId, List<SessionUser> users) {
+    public Session(SessionStatus status, PitchType type, ObjectId pitchId, ObjectId organizerId, List<SessionUser> users) {
         this.status = status;
         this.type = type;
         this.pitchId = pitchId;
+        this.organizerId = organizerId;
         this.users = users;
     }
 
@@ -128,6 +134,14 @@ public class Session {
 
     public void setType(PitchType type) {
         this.type = type;
+    }
+
+    public ObjectId getOrganizerId() {
+        return organizerId;
+    }
+
+    public void setOrganizerId(ObjectId organizerId) {
+        this.organizerId = organizerId;
     }
 
     public ObjectId getPitchId() {
