@@ -66,6 +66,12 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-micrometer-registry-prometheus</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>de.westnordost</groupId>
+            <artifactId>osmapi</artifactId>
+            <version>4.0</version>
+        </dependency>
         <!--- Test Scope Dependencies -->
         <dependency>
             <groupId>io.quarkus</groupId>
