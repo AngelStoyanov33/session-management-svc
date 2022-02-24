@@ -27,6 +27,11 @@ public class ExtendedSessionUser {
     public ExtendedSessionUser(UserDTO user) {
         this.user = user;
     }
+    public ExtendedSessionUser(UserDTO user, String joinedAt, String leftAt) {
+        this.user = user;
+        this.joinedAt = joinedAt;
+        this.leftAt = leftAt;
+    }
 
     public ExtendedSessionUser() {
     }

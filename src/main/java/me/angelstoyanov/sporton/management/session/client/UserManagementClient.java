@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @RegisterForReflection
@@ -22,5 +23,5 @@ public interface UserManagementClient {
 
     @GET
     @Path("/users")
-    RestResponse<List<User>> getUsers(List<String> ids);
+    Response getUsers(List<String> ids);
 }
