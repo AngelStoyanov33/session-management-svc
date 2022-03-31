@@ -15,7 +15,7 @@ public class SessionUser {
 
     @JsonProperty("user_id")
     @BsonProperty("user_id")
-    private ObjectId userId;
+    private String userId;
 
     @JsonProperty("joined_at")
     @BsonProperty("joined_at")
@@ -25,18 +25,18 @@ public class SessionUser {
     @BsonProperty("left_at")
     private String leftAt;
 
-    public SessionUser(ObjectId userId) {
+    public SessionUser(String userId) {
         this.userId = userId;
     }
 
     public SessionUser() {
     }
 
-    public ObjectId getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(ObjectId userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -39,7 +39,11 @@ public class SessionResource {
     @POST
     @ResponseStatus(201)
     @Path("/session")
-    public RestResponse<Session> createPitch(Session session) {
+    public RestResponse<Session> createSession(Session session,
+                                               @HeaderParam("X-Requesting-User-Id") String userId) {
+        if(!session.getOrganizerId().equals(userId)){
+            return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.FORBIDDEN).build();
+        }
         Session newSession = sessionRepository.addSession(session);
         return RestResponse.ResponseBuilder.ok(newSession).build();
 
@@ -61,11 +65,11 @@ public class SessionResource {
             restClient.getUsers(userIds).forEach(user -> {
                 SessionUser sessionUserReference = session.getUsers()
                         .stream()
-                        .filter(sessionUser -> sessionUser.getUserId().equals(user.getId()))
+                        .filter(sessionUser -> sessionUser.getUserId().equals(user.getUserId()))
                         .findFirst().get();
                 extendedSessionUsers.add(new ExtendedSessionUser(new UserDTO(user),
                         sessionUserReference.getJoinedAt(), sessionUserReference.getLeftAt()));
-                if (user.getId().equals(session.getOrganizerId())) {
+                if (user.getUserId().equals(session.getOrganizerId())) {
                     organizerUser.set(new UserDTO(user));
                 }
             });
@@ -81,8 +85,14 @@ public class SessionResource {
     @DELETE
     @ResponseStatus(200)
     @Path("/session/{id}")
-    public RestResponse<Session> deletePitch(@PathParam("id") String id) {
+    public RestResponse<Session> deleteSession(@PathParam("id") String id,
+                                               @HeaderParam("X-Requesting-User-Role") String userRole,
+                                               @HeaderParam("X-Requesting-User-Id") String userId) {
         try {
+            Session session = sessionRepository.findSessionById(new ObjectId(id));
+            if(!session.getOrganizerId().equals(userId) && !userRole.equals("ADMIN")){
+                return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.FORBIDDEN).build();
+            }
             sessionRepository.deleteSessionById(new ObjectId(id));
             return RestResponse.ResponseBuilder.ok((Session) null).build();
         } catch (SessionNotExistsException e) {
@@ -115,7 +125,44 @@ public class SessionResource {
         }
 
         return RestResponse.ResponseBuilder.ok(sessions).build();
+    }
 
+    @PATCH
+    @ResponseStatus(200)
+    @Path("/session/{id}/status")
+    public RestResponse<Session> updateSessionStatus(@PathParam("id") String id,
+                                                           @NotNull @QueryParam("status") SessionStatus status,
+                                                           @HeaderParam("X-Requesting-User-Role") String userRole,
+                                                           @HeaderParam("X-Requesting-User-Id") String userId) {
+        try {
+            Session session = sessionRepository.findById(new ObjectId(id));
+            if(!session.getOrganizerId().toString().equals(userId) && !userRole.equals("ADMIN")) {
+                return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.FORBIDDEN).build();
+            }
+            session.setStatus(status);
+            sessionRepository.addSession(session);
+            return RestResponse.ResponseBuilder.ok(session).build();
+        } catch (SessionNotExistsException e) {
+            return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.NOT_FOUND).build();
+        }
+    }
+
+    @PATCH
+    @ResponseStatus(200)
+    @Path("/session/{id}/player/{playerId}")
+    public RestResponse<Session> addPlayerToSession(@PathParam("id") String id, @PathParam("playerId") String playerId,
+                                                     @HeaderParam("X-Requesting-User-Role") String userRole,
+                                                     @HeaderParam("X-Requesting-User-Id") String userId) {
+        try {
+            Session session = sessionRepository.findSessionById(new ObjectId(id));
+            if(!playerId.equals(userId) && !userRole.equals("ADMIN")) {
+                return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.FORBIDDEN).build();
+            }
+            session = sessionRepository.addUserToSession(session, new SessionUser(playerId));
+            return RestResponse.ResponseBuilder.ok(session).build();
+        } catch (SessionNotExistsException e) {
+            return RestResponse.ResponseBuilder.ok((Session) null).status(RestResponse.Status.NOT_FOUND).build();
+        }
     }
 
 }

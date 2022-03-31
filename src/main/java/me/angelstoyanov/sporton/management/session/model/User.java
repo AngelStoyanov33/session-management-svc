@@ -5,16 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
 @JsonRootName("user")
-@JsonPropertyOrder({"id", "email", "first_name", "last_name", "location"})
+@JsonPropertyOrder({"user_id", "email", "first_name", "last_name", "location"})
 public class User {
 
-    @JsonProperty("id")
-    public ObjectId id;
+    @JsonProperty(value = "user_id", required = true)
+    private String userId;
 
     @JsonProperty(value = "email", required = true)
     private String email;
@@ -47,12 +46,12 @@ public class User {
         this.location = other.getLocation();
     }
 
-    public ObjectId getId() {
-        return id;
+    public String getUserId() {
+        return this.userId;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -92,18 +91,18 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(location, user.location);
+        return Objects.equals(userId, user.userId) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(location, user.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, location);
+        return Objects.hash(userId, email, firstName, lastName, location);
     }
 
     @Override
     public String toString() {
         return "{" +
-                "id=" + id +
+                "user_id=" + userId +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

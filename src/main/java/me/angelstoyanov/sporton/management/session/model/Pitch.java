@@ -3,8 +3,6 @@ package me.angelstoyanov.sporton.management.session.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import io.quarkus.mongodb.panache.common.MongoEntity;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -23,19 +21,15 @@ public class Pitch {
     private PitchType type;
 
     @JsonProperty(value = "location", required = true)
-    @BsonProperty("location")
     private Polygon location;
 
     @JsonProperty(value = "wayId", required = true)
-    @BsonProperty("wayId")
     private long wayId;
 
     @JsonProperty(value = "tags")
-    @BsonProperty("tags")
     private Map<String, String> tags;
 
     @JsonProperty(value = "roles_required")
-    @BsonProperty("roles_required")
     private List<String> rolesRequired = null;
 
     public Pitch(ObjectId id, String name, PitchType type, Polygon location, long wayId, Map<String, String> tags, List<String> rolesRequired) {

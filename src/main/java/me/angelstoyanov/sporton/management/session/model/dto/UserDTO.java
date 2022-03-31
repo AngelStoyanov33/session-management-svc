@@ -10,8 +10,8 @@ import org.bson.types.ObjectId;
 @JsonRootName("user")
 @JsonPropertyOrder({"id", "email", "first_name", "last_name", "location"})
 public class UserDTO {
-    @JsonProperty("id")
-    public ObjectId id;
+    @JsonProperty("user_id")
+    public String userId;
 
     @JsonProperty(value = "email", required = true)
     private String email;
@@ -28,14 +28,14 @@ public class UserDTO {
     }
 
     public UserDTO(User user){
-        this.id = user.getId();
+        this.userId = user.getUserId();
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
     }
 
-    public UserDTO(ObjectId id, String email, String firstName, String lastName) {
-        this.id = id;
+    public UserDTO(String id, String email, String firstName, String lastName) {
+        this.userId = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,12 +47,12 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public ObjectId getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(ObjectId id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
