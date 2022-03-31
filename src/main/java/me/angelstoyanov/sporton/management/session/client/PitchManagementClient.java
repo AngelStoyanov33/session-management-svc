@@ -27,7 +27,7 @@ public interface PitchManagementClient {
                               @QueryParam("radius") double radius, @QueryParam("type") PitchType type);
 
     @GET
-    @Path("/pitches")
+    @Path("/pitch/all")
     Response getPitches(@NotNull @QueryParam("region") String region,
                         @QueryParam("type") PitchType type);
 

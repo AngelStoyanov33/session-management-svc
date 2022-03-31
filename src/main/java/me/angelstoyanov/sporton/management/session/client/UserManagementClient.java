@@ -22,6 +22,6 @@ public interface UserManagementClient {
     RestResponse<User> getUser(@PathParam("id") String id);
 
     @GET
-    @Path("/users")
+    @Path("/user/all")
     Response getUsers(List<String> ids);
 }
